@@ -1,0 +1,12 @@
+{{#if content.length}}
+  <ul class="list-group">
+    {{#each content}}
+      <li class="list-group-item">
+        <span class="badge badge-primary"> {{ this.email }} </span>  
+        [ <span class="badge badge-success">{{ this.date }}</span>  ]: {{ this.message }} 
+      </li>
+    {{/each}}
+  </ul>
+{{ else }}
+  <h4 class="alert alert-warning">No hay mensaje</h4>
+{{/if}}
