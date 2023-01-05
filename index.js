@@ -5,8 +5,9 @@ import { engine } from 'express-handlebars'
 import { Server } from 'socket.io'
 import { fileURLToPath } from 'url'
 import router from './routes/api/producto.js'
+
 import { SocketCtrl } from './socket/producto.socket.js'
-import { createTableChats, createTableProducts } from './database/init.js'
+// import { createTableChats, createTableProducts } from './database/init.js'
 
 const app = express()
 const server = http.createServer(app)
@@ -23,8 +24,8 @@ app.engine('handlebars', engine())
 app.set('views', join(__dirname, './views'))
 app.set('view engine', 'handlebars')
 
-createTableProducts()
-createTableChats()
+// createTableProducts()
+// createTableChats()
 
 io.on('connection', socket => SocketCtrl(socket, io))
 app.use('/api', router)

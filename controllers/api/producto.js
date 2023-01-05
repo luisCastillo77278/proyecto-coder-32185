@@ -2,6 +2,7 @@ import { request, response } from 'express'
 import { Container } from '../../models/ContainerDB.js'
 import { clientSql } from '../../database/cliente.js'
 import { Product } from '../../models/Product.js'
+import { getProductos } from '../../mocks/producto.js'
 
 const listProducts = new Container(clientSql, 'PRODUCTS')
 
@@ -95,6 +96,19 @@ export const ProductoCtrl = {
 
       return res.status(200).json({
         producto
+      })
+    } catch (error) {
+      return res.status(500).json({
+        message: error.message
+      })
+    }
+  },
+  test: async (req = request, res = response) => {
+    try {
+      const COUNT_PRODUCTS = 5
+      const count = Number(req.query.count) || COUNT_PRODUCTS
+      res.json({
+        productos: getProductos(count)
       })
     } catch (error) {
       return res.status(500).json({

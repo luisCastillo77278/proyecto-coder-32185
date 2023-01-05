@@ -8,5 +8,6 @@ router.get('/productos/:id', ProductoCtrl.getById)
 router.post('/productos', ProductoCtrl.create)
 router.put('/productos/:id', ProductoCtrl.updateById)
 router.delete('/productos/:id', ProductoCtrl.deleteById)
+router.get('/productos-test', ProductoCtrl.test)
 
 export default router
