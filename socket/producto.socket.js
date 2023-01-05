@@ -8,8 +8,7 @@ export const SocketCtrl = async (socket, io) => {
 }
 
 const ProductoSocket = async (socket, io) => {
-
-  const listProducts = new Container(clientSql, "PRODUCTS");
+  const listProducts = new Container(clientSql, 'PRODUCTS')
   const productos = await listProducts.getAll()
   socket.emit('productos', productos)
 
@@ -21,7 +20,7 @@ const ProductoSocket = async (socket, io) => {
 }
 
 const ChatSocket = async (socket, io) => {
-  const listChats = new Container(clientSql, "CHATS");
+  const listChats = new Container(clientSql, 'CHATS')
   const chats = await listChats.getAll()
   socket.emit('chats', chats)
 
@@ -30,5 +29,4 @@ const ChatSocket = async (socket, io) => {
     const chats = await listChats.getAll()
     io.sockets.emit('chats', chats)
   })
-
 }

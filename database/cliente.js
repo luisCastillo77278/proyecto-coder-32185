@@ -1,4 +1,4 @@
-import knexConfig from 'knex'
-import { Configure } from "./config.js";
+import KnexConfig from 'knex'
+import { Configure } from './config.js'
 
-export const clientSql = new knexConfig(Configure.mysql)
+export const clientSql = new KnexConfig(Configure.mysql)

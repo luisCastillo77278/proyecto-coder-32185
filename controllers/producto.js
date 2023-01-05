@@ -1,7 +1,7 @@
+import { request, response } from 'express'
 import { Product } from '../models/Product.js'
 import { Container } from '../models/ContainerDB.js'
-import { clientSql } from "../database/cliente.js";
-import { Product } from '../models/Product.js'
+import { clientSql } from '../database/cliente.js'
 
 const listProducts = new Container(clientSql, 'PRODUCTS')
 

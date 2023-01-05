@@ -9,25 +9,20 @@ form.addEventListener('submit', async (e) => {
     new FormData(e.target)
   )
 
-  if (!producto.title)
-    return
+  if (!producto.title) { return }
 
-  if (!producto.price)
-    return
+  if (!producto.price) { return }
 
   socket.emit('addProducto', producto)
   form.reset()
-});
+})
 
 btnEnviar.addEventListener('click', () => {
   const message = document.querySelector('#message')
   const email = document.querySelector('#email')
 
-  if (!message.value)
-    return
-  if (!email.value)
-    return
-
+  if (!message.value) { return }
+  if (!email.value) { return }
 
   const payload = {
     message: message.value,

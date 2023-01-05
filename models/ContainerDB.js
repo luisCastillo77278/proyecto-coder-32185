@@ -1,58 +1,58 @@
-//todo falta realizar el throw error
+// todo falta realizar el throw error
 export class Container {
-  constructor(knex, table) {
-    this.table = table;
-    this.knex = knex;
+  constructor (knex, table) {
+    this.table = table
+    this.knex = knex
   }
 
-  async getAll() {
+  async getAll () {
     try {
-      const resp = await this.knex.from(this.table).select();
-      return resp;
+      const resp = await this.knex.from(this.table).select()
+      return resp
     } catch (err) {
-      throw err
+      throw new Error(err)
     }
   }
 
-  async getById(id) {
+  async getById (id) {
     try {
-      const { 0: resp } = await this.knex.from(this.table).where("id", id);
-      return resp;
+      const { 0: resp } = await this.knex.from(this.table).where('id', id)
+      return resp
     } catch (err) {
-      throw err
+      throw new Error(err)
     }
   }
 
-  async save(obj) {
+  async save (obj) {
     try {
-      const { 0: resp } = await this.knex.from(this.table).insert(obj);
-      if (resp !== 0) return;
-      const element = await this.getById(obj.id);
-      return element;
+      const { 0: resp } = await this.knex.from(this.table).insert(obj)
+      if (resp !== 0) return
+      const element = await this.getById(obj.id)
+      return element
     } catch (err) {
-      throw err
+      throw new Error(err)
     }
   }
 
-  async deleteById(id) {
+  async deleteById (id) {
     try {
-      const element = await this.getById(id);
-      if(!element) return 
-      await this.knex.from(this.table).where("id", id).del();
-      return element;
+      const element = await this.getById(id)
+      if (!element) return
+      await this.knex.from(this.table).where('id', id).del()
+      return element
     } catch (err) {
-      throw err
+      throw new Error(err)
     }
   }
 
-  async updateById(id, obj) {
+  async updateById (id, obj) {
     try {
-      const resp = await this.knex.from(this.table).where("id", id).update(obj);
-      if (resp !== 1) return;
-      const element = await this.getById(id);
-      return element;
+      const resp = await this.knex.from(this.table).where('id', id).update(obj)
+      if (resp !== 1) return
+      const element = await this.getById(id)
+      return element
     } catch (err) {
-      throw err
+      throw new Error(err)
     }
   }
 }

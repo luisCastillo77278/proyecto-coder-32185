@@ -8,12 +8,11 @@ import router from './routes/api/producto.js'
 import { SocketCtrl } from './socket/producto.socket.js'
 import { createTableChats, createTableProducts } from './database/init.js'
 
-
 const app = express()
 const server = http.createServer(app)
 const io = new Server(server)
 
-const PORT = 8080
+const PORT = 3000
 
 const __dirname = dirname(fileURLToPath(import.meta.url))
 
@@ -28,7 +27,7 @@ createTableProducts()
 createTableChats()
 
 io.on('connection', socket => SocketCtrl(socket, io))
-app.use('/api',router)
+app.use('/api', router)
 
 server.listen(
   PORT,
@@ -37,4 +36,4 @@ server.listen(
   }
 )
 
-app.on('error', error => console.log(`Error en el servidor ${error}`));
+app.on('error', error => console.log(`Error en el servidor ${error}`))
