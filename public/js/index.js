@@ -1,6 +1,6 @@
 const socket = io()
 const form = document.querySelector('form')
-const btnEnviar = document.querySelector('#btnEnviar')
+const formChat = document.querySelector('#form-chat')
 
 form.addEventListener('submit', async (e) => {
   e.preventDefault()
@@ -17,22 +17,24 @@ form.addEventListener('submit', async (e) => {
   form.reset()
 })
 
-btnEnviar.addEventListener('click', () => {
-  const message = document.querySelector('#message')
-  const email = document.querySelector('#email')
+formChat.addEventListener('submit', (e) => {
+  e.preventDefault()
 
-  if (!message.value) { return }
-  if (!email.value) { return }
+  const payload = Object.fromEntries(
+    new FormData(e.target)
+  )
 
-  const payload = {
-    message: message.value,
-    email: email.value,
-    date: new Date().toUTCString()
+  const isNotInput = Object.values(payload).some(input => input === '')
+  if (isNotInput) return
+
+  const { message, ...users } = payload
+  const data = {
+    message,
+    users
   }
 
-  socket.emit('addChat', payload)
-  message.value = ''
-  email.value = ''
+  socket.emit('addChat', { data })
+  form.reset()
 })
 
 socket.on('productos', async (payload) => {
