@@ -5,7 +5,7 @@ export const Configure = {
       host: '127.0.0.1',
       port: 3306,
       user: 'root',
-      password: 'lc1501',
+      password: 'lc77278',
       database: 'coderhouse'
     }
   }

@@ -22,6 +22,7 @@ export const ProductoCtrl = {
   },
   create: (req, res) => {
     return res.render('formulario', {
+      name: req.session.user,
       title: 'Formulario de productos',
       toPath: '/producto',
       textPath: 'menú'
@@ -29,6 +30,18 @@ export const ProductoCtrl = {
   },
   save: async (req = request, res = response) => {
     const { title, price, thumbnail } = req.body
+
+    if (!title || !price || !thumbnail) {
+      return res.render('formulario', {
+        name: req.session.user,
+        existError: true,
+        error: 'los campos son obligatorios',
+        title: 'Formulario de productos',
+        toPath: '/producto',
+        textPath: 'menú'
+      })
+    }
+
     const producto = await listProducts.save(
       new Product(title, price, thumbnail)
     )

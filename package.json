@@ -5,8 +5,8 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
-    "start:dev": "nodemon index.js",
-    "start": "node index.js"
+    "start:dev": "NODE=dev nodemon index.js",
+    "start": "NODE=prod node index.js"
   },
   "keywords": [],
   "author": "",
@@ -17,8 +17,10 @@
     "standard": "^17.0.0"
   },
   "dependencies": {
+    "connect-mongo": "^4.6.0",
     "express": "^4.18.2",
     "express-handlebars": "^6.0.6",
+    "express-session": "^1.17.3",
     "knex": "^2.3.0",
     "mongodb": "^4.13.0",
     "mysql2": "^2.3.3",
@@ -27,6 +29,8 @@
   },
   "eslintConfig": {
     "extends": "standard",
-    "ignorePatterns":["public/js/*.js"]
+    "ignorePatterns": [
+      "public/js/*.js"
+    ]
   }
 }

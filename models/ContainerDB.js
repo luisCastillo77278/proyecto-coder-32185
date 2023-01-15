@@ -1,4 +1,3 @@
-// todo falta realizar el throw error
 export class Container {
   constructor (knex, table) {
     this.table = table
