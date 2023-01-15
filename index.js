@@ -22,7 +22,7 @@ const io = new Server(server)
 const PORT = 3001
 const URI_MONGO = process.env.NODE === 'dev'
   ? 'mongodb://lc77278:lc77278@localhost:27017/sesiones?authSource=admin&w=1'
-  : 'NODE_PROD=ongodb+srv://lc77278:lc77278@cluster0.vkqhkh4.mongodb.net'
+  : 'mongodb+srv://lc77278:lc77278@cluster0.vkqhkh4.mongodb.net'
 
 const advancedOptions = {
   useNewUrlParser: true,
