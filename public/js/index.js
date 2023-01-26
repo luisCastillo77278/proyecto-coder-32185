@@ -44,7 +44,14 @@ socket.on('productos', async (payload) => {
 
 socket.on('chats', async (payload) => {
   const chats = document.querySelector('#list-chat')
-  await PlantillaRender(chats, 'lista', payload)
+
+  const authorSchema = new normalizr.schema.Entity('author', {}, { idAttribute: 'email' })
+  const messageSchema = new normalizr.schema.Entity('message', { author: authorSchema })
+  const messagesSchema = new normalizr.schema.Array({ messages: messageSchema })
+
+  const denormalizer = new normalizr.denormalize(payload.result, messagesSchema, payload.entities)
+
+  await PlantillaRender(chats, 'lista', denormalizer)
 })
 
 const PlantillaRender = async (elementDom, namePlantilla, content) => {

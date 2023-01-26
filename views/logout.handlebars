@@ -1,0 +1,10 @@
+<div class="alert alert-info">
+  <h2>Hasta luego: {{ name }}</h2>
+</div>
+
+<script>
+  const url = new URL(window.location)
+  setTimeout(()=>{
+    window.location = url.origin + '/auth/login'
+  }, 2000)
+</script>

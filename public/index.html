@@ -15,7 +15,7 @@
       crossorigin="anonymous"
       referrerpolicy="no-referrer"
     ></script>
-    <script
+    <script 
       src="https://cdn.jsdelivr.net/npm/normalizr@3.6.1/dist/normalizr.browser.min.js"
     ></script>
     <title>Formulario</title>
@@ -50,10 +50,7 @@
 
       <div class="jumbotron">
         <h2>Centro de mensajes</h2>
-        <hr>
-        <div id="list-chat"></div>
-        <hr />
-        <form method="post" id="form-chat">
+        <form method="post" id="form_message">
           <input
             id="email"
             name="email"
@@ -62,51 +59,46 @@
             class="form-control"
             required
           />
-          <input 
+          <input
             id="nombre"
             name="nombre"
             type="text"
             placeholder="nombre"
-            class="form-control mt-2"
+            class="form-control"
             required
           />
-          
-          <input 
+          <input
             id="apellido"
             name="apellido"
             type="text"
             placeholder="apellido"
-            class="form-control mt-2"
+            class="form-control"
             required
           />
-  
-          <input 
+          <input
             id="edad"
             name="edad"
-            type="number"
+            type="text"
             placeholder="edad"
-            class="form-control mt-2"
+            class="form-control"
             required
           />
-  
-          <input 
+          <input
             id="alias"
             name="alias"
             type="text"
             placeholder="alias"
-            class="form-control mt-2"
-            
-          />
-  
-          <input 
-            id="url"
-            name="url"
-            type="url"
-            placeholder="url"
-            class="form-control mt-2"
+            class="form-control"
             required
           />
-  
+          <input
+            id="avatar"
+            name="avatar"
+            type="text"
+            placeholder="avatar"
+            class="form-control"
+            required
+          />
           <textarea
             class="mt-3 form-control"
             name="message"
@@ -118,6 +110,8 @@
           ></textarea>
           <button id="btnEnviar" class="mt-3 btn btn-info">enviar</button>
         </form>
+        <hr />
+        <div id="list-chat"></div>
       </div>
     </div>
 

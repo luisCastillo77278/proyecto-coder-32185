@@ -1,28 +1,29 @@
 import { MongoClient } from 'mongodb'
+import { normalize, schema } from 'normalizr'
 
-export class Container {
-  #config = {
-    url: 'mongodb://lc77278:lc77278@localhost:27017'
+export class MongoContainer {
+  constructor (name, collection) {
+    this.connection = this.ConnectDb(name, collection)
   }
 
-  constructor (collection) {
-    this.collection = this.#configDb(collection)
-  }
-
-  async #configDb (collection) {
-    console.log(collection)
-    const client = new MongoClient(this.#config.url)
-    await client.connect()
-    const db = client.db('coderpruebas')
+  async ConnectDb (name, collection) {
+    const cliente = new MongoClient('mongodb+srv://lc77278:lc77278@cluster0.vkqhkh4.mongodb.net')
+    await cliente.connect()
+    const db = cliente.db(name)
     return db.collection(collection)
   }
 
   async save (data) {
-    const { insertedId } = await (await this.collection).insertOne(data)
-    return await (await this.collection).findOne({ _id: insertedId }, { projection: { _id: 0 } })
+    const { insertedId } = await (await this.connection).insertOne(data)
+    return insertedId
   }
 
   async getAll () {
-    return await (await this.collection).find({}, { projection: { _id: 0 } }).toArray()
+    const messages = await (await this.connection).find({}, { projection: { _id: 0 } }).toArray()
+    const authorSchema = new schema.Entity('author', {}, { idAttribute: 'email' })
+    const messageSchema = new schema.Entity('message', { author: authorSchema })
+    const messagesSchema = new schema.Array({ messages: messageSchema })
+    const normalizer = normalize(messages, messagesSchema)
+    return normalizer
   }
 }

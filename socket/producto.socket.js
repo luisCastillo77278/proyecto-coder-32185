@@ -1,8 +1,6 @@
 import { Product } from '../models/Product.js'
-// import { Container } from '../models/ContainerDB.js'
-import { Container } from '../models/MongoContainer.js'
-import { normalize, schema } from 'normalizr'
-// import { clientSql } from '../database/cliente.js'
+import { Container } from '../models/ContainerDB.js'
+import { MongoContainer } from '../models/MongoContainer.js'
 
 export const SocketCtrl = async (socket, io) => {
   ProductoSocket(socket, io)
@@ -23,24 +21,14 @@ const ProductoSocket = async (socket, io) => {
 }
 
 const ChatSocket = async (socket, io) => {
-  const listChats = new Container('chats')
-  const authorSchema = new schema.Entity('author', {}, { idAttribute: 'email' })
-  const messageSchema = new schema.Entity('message', { author: authorSchema })
-  const messagesSchema = new schema.Array(messageSchema)
-
+  const listChats = new MongoContainer('coderhouse', 'CHATS')
   const chats = await listChats.getAll()
 
-  const normalizado = normalize(chats, messagesSchema)
-  console.log(normalizado)
   socket.emit('chats', chats)
 
   socket.on('addChat', async (payload) => {
     await listChats.save(payload)
     const chats = await listChats.getAll()
-
-    const normalizado = normalize(chats, messagesSchema)
-    console.log(normalizado)
-
     io.sockets.emit('chats', chats)
   })
 }
