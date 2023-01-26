@@ -2,12 +2,16 @@ import { MongoClient } from 'mongodb'
 import { normalize, schema } from 'normalizr'
 
 export class MongoContainer {
+  #URI = process.env.NODE === 'dev'
+    ? 'mongodb://lc77278:lc77278@localhost:27017'
+    : 'mongodb+srv://lc77278:lc77278@cluster0.vkqhkh4.mongodb.net'
+
   constructor (name, collection) {
     this.connection = this.ConnectDb(name, collection)
   }
 
   async ConnectDb (name, collection) {
-    const cliente = new MongoClient('mongodb+srv://lc77278:lc77278@cluster0.vkqhkh4.mongodb.net')
+    const cliente = new MongoClient(this.#URI)
     await cliente.connect()
     const db = cliente.db(name)
     return db.collection(collection)
