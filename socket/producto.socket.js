@@ -1,5 +1,6 @@
 import { Product } from '../models/Product.js'
 import { Container } from '../models/ContainerDB.js'
+import { clientSql } from '../database/cliente.js'
 import { MongoContainer } from '../models/MongoContainer.js'
 
 export const SocketCtrl = async (socket, io) => {
@@ -8,8 +9,7 @@ export const SocketCtrl = async (socket, io) => {
 }
 
 const ProductoSocket = async (socket, io) => {
-  // const listProducts = new Container(clientSql, 'PRODUCTS')
-  const listProducts = new Container('products')
+  const listProducts = new Container(clientSql, 'PRODUCTS')
   const productos = await listProducts.getAll()
   socket.emit('productos', productos)
 
