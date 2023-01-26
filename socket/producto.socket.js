@@ -1,6 +1,7 @@
 import { Product } from '../models/Product.js'
 import { Container } from '../models/ContainerDB.js'
 import { clientSql } from '../database/cliente.js'
+import { MongoContainer } from '../models/MongoContainer.js'
 
 export const SocketCtrl = async (socket, io) => {
   ProductoSocket(socket, io)
@@ -20,7 +21,7 @@ const ProductoSocket = async (socket, io) => {
 }
 
 const ChatSocket = async (socket, io) => {
-  const listChats = new Container(clientSql, 'CHATS')
+  const listChats = new MongoContainer('coderhouse', 'CHATS')
   const chats = await listChats.getAll()
   socket.emit('chats', chats)
 

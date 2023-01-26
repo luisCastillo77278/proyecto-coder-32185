@@ -1,5 +1,6 @@
 const socket = io()
 const form = document.querySelector('form')
+const formMessage = document.querySelector('#form_message')
 const btnEnviar = document.querySelector('#btnEnviar')
 
 form.addEventListener('submit', async (e) => {
@@ -17,22 +18,23 @@ form.addEventListener('submit', async (e) => {
   form.reset()
 })
 
-btnEnviar.addEventListener('click', () => {
-  const message = document.querySelector('#message')
-  const email = document.querySelector('#email')
-
-  if (!message.value) { return }
-  if (!email.value) { return }
+formMessage.addEventListener('submit', (e)=>{
+  e.preventDefault()
+  const formData = Object.fromEntries(
+    new FormData(e.target)
+  )
+  
+  const {message, ...author} = formData
 
   const payload = {
-    message: message.value,
-    email: email.value,
-    date: new Date().toUTCString()
+    message,
+    author: {
+      ...author,
+      date: new Date().toUTCString()
+    }
   }
 
   socket.emit('addChat', payload)
-  message.value = ''
-  email.value = ''
 })
 
 socket.on('productos', async (payload) => {
@@ -42,7 +44,14 @@ socket.on('productos', async (payload) => {
 
 socket.on('chats', async (payload) => {
   const chats = document.querySelector('#list-chat')
-  await PlantillaRender(chats, 'lista', payload)
+
+  const authorSchema = new normalizr.schema.Entity('author', {}, { idAttribute: 'email' })
+  const messageSchema = new normalizr.schema.Entity('message', { author: authorSchema })
+  const messagesSchema = new normalizr.schema.Array({ messages: messageSchema })
+
+  const denormalizer = new normalizr.denormalize(payload.result, messagesSchema, payload.entities)
+
+  await PlantillaRender(chats, 'lista', denormalizer)
 })
 
 const PlantillaRender = async (elementDom, namePlantilla, content) => {

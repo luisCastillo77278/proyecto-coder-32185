@@ -2,8 +2,11 @@
   <ul class="list-group">
     {{#each content}}
       <li class="list-group-item">
-        <span class="badge badge-primary"> {{ this.email }} </span>  
-        [ <span class="badge badge-success">{{ this.date }}</span>  ]: {{ this.message }} 
+        <img style="border-radius: 100%" width="50" src="{{this.author.avatar}}" />
+        <span class="badge badge-primary"> {{ this.author.email }} </span>  
+        [ 
+          <span class="badge badge-success">{{ this.author.date }}</span>  
+        ]: {{ this.message }} 
       </li>
     {{/each}}
   </ul>
