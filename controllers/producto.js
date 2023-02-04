@@ -22,7 +22,7 @@ export const ProductoCtrl = {
   },
   create: (req, res) => {
     return res.render('formulario', {
-      name: req.session.user,
+      name: req.user.email,
       title: 'Formulario de productos',
       toPath: '/producto',
       textPath: 'menú'

@@ -14,6 +14,11 @@ import router from './routes/api/producto.js'
 import login from './routes/autenticacion.js'
 import producto from './routes/producto.js'
 import { SocketCtrl } from './socket/producto.socket.js'
+import {
+  loginPassport,
+  deserailizer,
+  serializer
+} from './middlewares/login.middleware.js'
 
 import {
   createTableChats,
@@ -47,46 +52,32 @@ app.set('view engine', 'handlebars')
 app.use(session({
   secret: 'secreto',
   saveUninitialized: false,
-  resave: false
+  resave: false,
+  store: MongoStore.create({
+    mongoUrl: URI_MONGO,
+    mongoOptions: advancedOptions
+  }),
+  cookie: {
+    maxAge: 20000
+  }
 }))
 
 createTableProducts()
 createTableChats()
 createTableUsers()
 
+passport.use('login', new Strategy({
+  usernameField: 'email'
+}, loginPassport))
+app.use(passport.initialize())
+passport.serializeUser(serializer)
+passport.deserializeUser(deserailizer)
+app.use(passport.session())
+
 io.on('connection', socket => SocketCtrl(socket, io))
 app.use('/auth', login)
 app.use('/producto', producto)
 app.use('/api', router)
-
-passport.use('login', new Strategy(
-  (email, password, done) => {
-    const user = users[email]
-    if (user?.password !== password) {
-      return done(null, false)
-    }
-    done(null, user)
-  })
-)
-
-app.use(passport.initialize())
-const users = {
-  'lc77278@gmail.com': {
-    email: 'lc77278@gmail.com',
-    password: '12345678'
-  }
-}
-
-passport.serializeUser((user, done) => {
-  done(null, user.email)
-})
-
-passport.deserializeUser((email, done) => {
-  const user = Object.values(users).find(u => u.email === email)
-  done(null, user)
-})
-
-app.use(passport.session())
 
 server.listen(
   PORT,
@@ -95,4 +86,4 @@ server.listen(
   }
 )
 
-// app.on('error', error => console.log(`Error en el servidor ${error}`))
+app.on('error', error => console.log(`Error en el servidor ${error}`))

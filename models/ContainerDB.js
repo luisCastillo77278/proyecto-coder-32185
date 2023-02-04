@@ -15,7 +15,7 @@ export class Container {
 
   async getByOne (element) {
     try {
-      const { 0: resp } = await this.knex.from(this.table).where('email', element).select('email', 'password')
+      const { 0: resp } = await this.knex.from(this.table).where('email', element).select('email', 'password', 'id')
       return resp
     } catch (err) {
       throw new Error(err)

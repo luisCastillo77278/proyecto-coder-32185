@@ -8,7 +8,7 @@ export const AutenticacionCtrl = {
   save: async (req = request, res = response) => {
     console.log('post login')
     // const { name } = req.body
-
+    console.log(req.user)
     // if (!name) return res.render('login')
 
     // if (!req.session.user) {
@@ -19,7 +19,7 @@ export const AutenticacionCtrl = {
   },
   logout: async (req = request, res = response) => {
     res.render('logout', {
-      name: req.session.user
+      name: req.user.email
     })
     req.session.destroy()
   }

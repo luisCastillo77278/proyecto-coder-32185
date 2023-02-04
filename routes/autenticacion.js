@@ -12,7 +12,7 @@ router.get('/login', AutenticacionCtrl.login)
 router.post('/create', passport.authenticate('login', {
   failWithError: true
 }),
-(req, res, next) => res.json({ resp: 'okl' }),
+AutenticacionCtrl.save,
 (_err, req, res, _next) => {
   res.status(401).send({ resp: false })
 }
