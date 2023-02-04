@@ -13,6 +13,15 @@ export class Container {
     }
   }
 
+  async getByOne (element) {
+    try {
+      const { 0: resp } = await this.knex.from(this.table).where('email', element).select('email', 'password')
+      return resp
+    } catch (err) {
+      throw new Error(err)
+    }
+  }
+
   async getById (id) {
     try {
       const { 0: resp } = await this.knex.from(this.table).where('id', id)

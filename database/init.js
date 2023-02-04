@@ -25,3 +25,16 @@ export const createTableChats = async () => {
   }
   console.log('TABLA CHATS CREADA')
 }
+
+export const createTableUsers = async () => {
+  const exist = await clientSql.schema.hasTable('USERS')
+  if (!exist) {
+    await clientSql.schema.createTable('USERS', table => {
+      table.increments('id')
+      table.string('email')
+      table.string('password')
+    })
+  }
+
+  console.log('TABLA USERS CREADA')
+}

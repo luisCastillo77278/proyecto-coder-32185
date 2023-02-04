@@ -5,6 +5,8 @@ import { fileURLToPath } from 'node:url'
 import express from 'express'
 import session from 'express-session'
 import MongoStore from 'connect-mongo'
+import passport from 'passport'
+import { Strategy } from 'passport-local'
 import { engine } from 'express-handlebars'
 import { Server } from 'socket.io'
 
@@ -13,7 +15,11 @@ import login from './routes/autenticacion.js'
 import producto from './routes/producto.js'
 import { SocketCtrl } from './socket/producto.socket.js'
 
-import { createTableChats, createTableProducts } from './database/init.js'
+import {
+  createTableChats,
+  createTableProducts,
+  createTableUsers
+} from './database/init.js'
 
 const app = express()
 const server = http.createServer(app)
@@ -32,7 +38,7 @@ const advancedOptions = {
 const __dirname = dirname(fileURLToPath(import.meta.url))
 
 app.use(express.json())
-app.use(express.urlencoded({ extended: false }))
+app.use(express.urlencoded({ extended: true }))
 app.use(express.static(join(__dirname, './public')))
 app.engine('handlebars', engine())
 app.set('views', join(__dirname, './views'))
@@ -41,23 +47,46 @@ app.set('view engine', 'handlebars')
 app.use(session({
   secret: 'secreto',
   saveUninitialized: false,
-  resave: false,
-  store: MongoStore.create({
-    mongoUrl: URI_MONGO,
-    mongoOptions: advancedOptions
-  }),
-  cookie: {
-    maxAge: 20000
-  }
+  resave: false
 }))
 
 createTableProducts()
 createTableChats()
+createTableUsers()
 
 io.on('connection', socket => SocketCtrl(socket, io))
 app.use('/auth', login)
 app.use('/producto', producto)
 app.use('/api', router)
+
+passport.use('login', new Strategy(
+  (email, password, done) => {
+    const user = users[email]
+    if (user?.password !== password) {
+      return done(null, false)
+    }
+    done(null, user)
+  })
+)
+
+app.use(passport.initialize())
+const users = {
+  'lc77278@gmail.com': {
+    email: 'lc77278@gmail.com',
+    password: '12345678'
+  }
+}
+
+passport.serializeUser((user, done) => {
+  done(null, user.email)
+})
+
+passport.deserializeUser((email, done) => {
+  const user = Object.values(users).find(u => u.email === email)
+  done(null, user)
+})
+
+app.use(passport.session())
 
 server.listen(
   PORT,
@@ -66,4 +95,4 @@ server.listen(
   }
 )
 
-app.on('error', error => console.log(`Error en el servidor ${error}`))
+// app.on('error', error => console.log(`Error en el servidor ${error}`))

@@ -6,13 +6,14 @@ export const AutenticacionCtrl = {
     return res.render('login')
   },
   save: async (req = request, res = response) => {
-    const { name } = req.body
+    console.log('post login')
+    // const { name } = req.body
 
-    if (!name) return res.render('login')
+    // if (!name) return res.render('login')
 
-    if (!req.session.user) {
-      req.session.user = name
-    }
+    // if (!req.session.user) {
+    //   req.session.user = name
+    // }
 
     return res.redirect('/producto/create')
   },
