@@ -16,6 +16,7 @@ import producto from './routes/producto.js'
 import { SocketCtrl } from './socket/producto.socket.js'
 import {
   loginPassport,
+  registerPassport,
   deserailizer,
   serializer
 } from './middlewares/login.middleware.js'
@@ -69,6 +70,10 @@ createTableUsers()
 passport.use('login', new Strategy({
   usernameField: 'email'
 }, loginPassport))
+passport.use('register', new Strategy({
+  usernameField: 'email',
+  passwordField: 'password'
+}, registerPassport))
 app.use(passport.initialize())
 passport.serializeUser(serializer)
 passport.deserializeUser(deserailizer)

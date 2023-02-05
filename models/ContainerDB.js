@@ -25,6 +25,7 @@ export class Container {
   async getById (id) {
     try {
       const { 0: resp } = await this.knex.from(this.table).where('id', id)
+      console.log(resp)
       return resp
     } catch (err) {
       throw new Error(err)
@@ -34,8 +35,7 @@ export class Container {
   async save (obj) {
     try {
       const { 0: resp } = await this.knex.from(this.table).insert(obj)
-      if (resp !== 0) return
-      const element = await this.getById(obj.id)
+      const element = await this.getById(resp)
       return element
     } catch (err) {
       throw new Error(err)

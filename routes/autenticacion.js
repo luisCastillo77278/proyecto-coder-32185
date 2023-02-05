@@ -22,7 +22,14 @@ router.post('/create',
 
 router.get('/register', AutenticacionCtrl.sigin)
 router.post('/register',
-  AutenticacionCtrl.register
+  passport.authenticate('register', { failWithError: true }),
+  AutenticacionCtrl.register,
+  (_err, _req, res, _next) => {
+    res.render('error', {
+      auth: 'LOGIN',
+      path: '/auth/register'
+    })
+  }
 )
 
 router.get('/logout', auth, AutenticacionCtrl.logout)
