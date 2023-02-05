@@ -4,7 +4,7 @@ import { auth } from '../middlewares/auth.middleware.js'
 
 const router = Router()
 
-router.get('/', ProductoCtrl.getAll)
+router.get('/', auth, ProductoCtrl.getAll)
 router.get('/create', auth, ProductoCtrl.create)
 router.post('/', auth, ProductoCtrl.save)
 

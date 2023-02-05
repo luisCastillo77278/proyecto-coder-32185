@@ -9,13 +9,20 @@ const router = Router()
 
 router.get('/login', AutenticacionCtrl.login)
 
-router.post('/create', passport.authenticate('login', {
-  failWithError: true
-}),
-AutenticacionCtrl.save,
-(_err, req, res, _next) => {
-  res.status(401).send({ resp: false })
-}
+router.post('/create',
+  passport.authenticate('login', { failWithError: true }),
+  AutenticacionCtrl.save,
+  (_err, _req, res, _next) => {
+    res.render('error', {
+      auth: 'LOGIN',
+      path: '/auth/login'
+    })
+  }
+)
+
+router.get('/register', AutenticacionCtrl.sigin)
+router.post('/register',
+  AutenticacionCtrl.register
 )
 
 router.get('/logout', auth, AutenticacionCtrl.logout)
