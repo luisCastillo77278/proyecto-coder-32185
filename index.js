@@ -5,6 +5,7 @@ import { fileURLToPath } from 'node:url'
 import { config } from 'dotenv'
 import express from 'express'
 import session from 'express-session'
+import parseArgs from 'minimist'
 import MongoStore from 'connect-mongo'
 import passport from 'passport'
 import { Strategy } from 'passport-local'
@@ -32,8 +33,13 @@ const app = express()
 const server = http.createServer(app)
 const io = new Server(server)
 config()
+const args = parseArgs(process.argv.slice(2), {
+  alias: {
+    p: 'port'
+  }
+})
 
-const PORT = 3001
+const PORT = args?.port ?? 3001
 const URI_MONGO = process.env.NODE === 'dev'
   ? process.env.MONGO_URI_DEV
   : process.env.MONGO_URI_PROD
@@ -53,7 +59,7 @@ app.set('views', join(__dirname, './views'))
 app.set('view engine', 'handlebars')
 
 app.use(session({
-  secret: 'secreto',
+  secret: process.env.SECRETO,
   saveUninitialized: false,
   resave: false,
   store: MongoStore.create({
