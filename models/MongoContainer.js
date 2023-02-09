@@ -1,10 +1,13 @@
 import { MongoClient } from 'mongodb'
 import { normalize, schema } from 'normalizr'
+import { config } from 'dotenv'
+
+config()
 
 export class MongoContainer {
   #URI = process.env.NODE === 'dev'
-    ? 'mongodb://lc77278:lc77278@localhost:27017'
-    : 'mongodb+srv://lc77278:lc77278@cluster0.vkqhkh4.mongodb.net'
+    ? process.env.MONGO_URI_DEV_CONT
+    : process.env.MONGO_URI_PROD
 
   constructor (name, collection) {
     this.connection = this.ConnectDb(name, collection)

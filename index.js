@@ -2,6 +2,7 @@ import http from 'node:http'
 import { dirname, join } from 'node:path'
 import { fileURLToPath } from 'node:url'
 
+import { config } from 'dotenv'
 import express from 'express'
 import session from 'express-session'
 import MongoStore from 'connect-mongo'
@@ -30,11 +31,12 @@ import {
 const app = express()
 const server = http.createServer(app)
 const io = new Server(server)
+config()
 
 const PORT = 3001
 const URI_MONGO = process.env.NODE === 'dev'
-  ? 'mongodb://lc77278:lc77278@localhost:27017/sesiones?authSource=admin&w=1'
-  : 'mongodb+srv://lc77278:lc77278@cluster0.vkqhkh4.mongodb.net'
+  ? process.env.MONGO_URI_DEV
+  : process.env.MONGO_URI_PROD
 
 const advancedOptions = {
   useNewUrlParser: true,
