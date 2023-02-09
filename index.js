@@ -34,12 +34,15 @@ const server = http.createServer(app)
 const io = new Server(server)
 config()
 const args = parseArgs(process.argv.slice(2), {
+  default: {
+    port: 3001
+  },
   alias: {
     p: 'port'
   }
 })
 
-const PORT = args?.port ?? 3001
+const PORT = args.port
 const URI_MONGO = process.env.NODE === 'dev'
   ? process.env.MONGO_URI_DEV
   : process.env.MONGO_URI_PROD
