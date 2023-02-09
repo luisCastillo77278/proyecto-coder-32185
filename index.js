@@ -11,7 +11,7 @@ import { Strategy } from 'passport-local'
 import { engine } from 'express-handlebars'
 import { Server } from 'socket.io'
 
-import router from './routes/api/producto.js'
+import router from './routes/api/index.js'
 import login from './routes/autenticacion.js'
 import producto from './routes/producto.js'
 import { SocketCtrl } from './socket/producto.socket.js'
