@@ -8,7 +8,7 @@ const countRepet = (numbers = []) => {
 }
 
 process.on('message', msg => {
-  const numbers = new Array(msg).fill().map((_value, _index) => numRandom(msg))
+  const numbers = new Array(msg).fill().map((_value, _index) => numRandom(1000))
   const repet = countRepet(numbers)
   process.send(repet)
 })

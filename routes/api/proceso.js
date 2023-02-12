@@ -9,7 +9,7 @@ const __dirname = dirname(fileURLToPath(import.meta.url))
 
 router.get('/ramdom', (req, res) => {
   const { cant } = req.query
-  const self = Number(cant) || 500
+  const self = Number(cant) || 100000000
   const computo = fork(join(__dirname, './utils/computo.js'))
   computo.on('message', msg => {
     if (msg === 'listo') {
