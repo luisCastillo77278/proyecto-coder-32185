@@ -102,4 +102,4 @@ server.listen(
   }
 )
 
-app.on('error', error => console.log(`Error en el servidor ${error}`))
+server.on('error', error => console.log(`Error en el servidor ${error}`))

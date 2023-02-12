@@ -1,28 +1,22 @@
-import { request, response, Router } from 'express'
+import { Router } from 'express'
+import { fork } from 'node:child_process'
+import { join, dirname } from 'node:path'
+import { fileURLToPath } from 'node:url'
 
 const router = Router()
 
-const numRandom = (max) => Math.round(Math.random() * (max + 1) - 1)
-const countRepet = (numbers = []) => {
-  const repet = {}
-  numbers.forEach(number => {
-    repet[number] = (repet[number] || 0) + 1
-  })
-  return repet
-}
+const __dirname = dirname(fileURLToPath(import.meta.url))
 
-router.get('/ramdom', (req = request, res = response) => {
+router.get('/ramdom', (req, res) => {
   const { cant } = req.query
-
-  const self = cant ?? 500 // 100.000.000
-
-  const numbers = new Array(self).fill().map((_value, _index) => numRandom(self))
-
-  const repet = countRepet(numbers)
-  console.log(repet)
-  res.json({
-    repet,
-    length: Object.values(repet).length
+  const self = Number(cant) || 500
+  const computo = fork(join(__dirname, './utils/computo.js'))
+  computo.on('message', msg => {
+    if (msg === 'listo') {
+      computo.send(self)
+    } else {
+      res.json(msg)
+    }
   })
 })
 

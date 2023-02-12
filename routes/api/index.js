@@ -8,5 +8,4 @@ const router = Router()
 router.use('/', product)
 router.use('/', sistema)
 router.use('/', proceso)
-
 export default router
